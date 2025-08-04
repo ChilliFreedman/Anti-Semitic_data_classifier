@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from cconvert_to_data_frame import DataLoader
 
 
@@ -84,6 +85,21 @@ class DataAnalyzer:
 
     def uppercase_words(self):
         dict_uppercase_words = {"uppercase_words": {"antisemitic": 0,"non_antisemitic": 0,"total": 0}}
+        new_df = self.first_df.copy()
+        ant_df = new_df.loc[new_df['Biased'] == 1]
+        non_ant_df = new_df.loc[new_df['Biased'] == 0]
+        #b = pd.new_df(new_df['Text'].tolist()).stack().str.split(expand=True).stack().str.isupper().sum()
+
+        ant = pd.Series(ant_df['Text']).str.split(expand=True).stack().str.isupper().sum()
+        non_ant = pd.Series(non_ant_df['Text']).str.split(expand=True).stack().str.isupper().sum()
+
+        dict_uppercase_words["uppercase_words"]["antisemitic"] = ant
+        dict_uppercase_words["uppercase_words"]["non_antisemitic"] = non_ant
+        dict_uppercase_words["uppercase_words"]["total"] = ant + non_ant
+
+
+
+
 
         return dict_uppercase_words
 
