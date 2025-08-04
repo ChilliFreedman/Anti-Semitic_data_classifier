@@ -33,6 +33,16 @@ class DataAnalyzer:
 
     def average_length(self):
         dict_average_length = {"average_length": {"antisemitic": 0,"non_antisemitic": 0,"total": 0}}
+        new_df = self.first_df.copy()
+        new_df["Count_Words"] = self.first_df['Text'].str.split().str.len()
+        avarge_words = new_df.groupby('Biased')['Count_Words'].mean()
+        avarge_words_all = new_df['Count_Words'].mean()
+        avarge_antisemitic = avarge_words[1]
+        avarge_non_antisemitic = avarge_words[0]
+        dict_average_length["average_length"]["antisemitic"] = avarge_antisemitic
+        dict_average_length["average_length"]["non_antisemitic"] = avarge_non_antisemitic
+        dict_average_length["average_length"]["total"] = avarge_words_all
+
 
         return dict_average_length
 
