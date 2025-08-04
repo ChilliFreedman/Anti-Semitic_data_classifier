@@ -20,6 +20,14 @@ class DataAnalyzer:
 
     def total_tweets(self):
         dict_total_tweets = {"total_tweets": {"antisemitic": 0,"non_antisemitic": 0,"total": 0,"unspecified" : 0}}
+        counter = self.first_df.groupby("Biased").size()
+        antisemitic = counter[1]
+        non_antisemitic = counter[0]
+        total = counter.sum()
+        dict_total_tweets["total_tweets"]["antisemitic"] = antisemitic
+        dict_total_tweets["total_tweets"]["non_antisemitic"] = non_antisemitic
+        dict_total_tweets["total_tweets"]["total"] = total
+        dict_total_tweets["total_tweets"]["unspecified"] = total - (antisemitic + non_antisemitic)
 
         return dict_total_tweets
 
