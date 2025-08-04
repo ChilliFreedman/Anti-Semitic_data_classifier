@@ -35,6 +35,7 @@ class DataAnalyzer:
         dict_average_length = {"average_length": {"antisemitic": 0,"non_antisemitic": 0,"total": 0}}
         new_df = self.first_df.copy()
         new_df["Count_Words"] = self.first_df['Text'].str.split().str.len()
+        #print(new_df["Count_Words"].sum())
         avarge_words = new_df.groupby('Biased')['Count_Words'].mean()
         avarge_words_all = new_df['Count_Words'].mean()
         avarge_antisemitic = avarge_words[1]
@@ -55,6 +56,25 @@ class DataAnalyzer:
 
     def longest_3_tweets(self):
         dict_longest_3_tweets = {"longest_3_tweets": {"antisemitic": [],"non_antisemitic": []}}
+        #Gets a copy of the original data frame
+        new_df = self.first_df.copy()
+        # Adds a column with the number of characters
+        new_df["Count_Leters"] = self.first_df['Text'].str.len()
+        # Splits into 2 data frames
+        ant_df = new_df.loc[new_df['Biased'] == 1]
+        non_ant_df = new_df.loc[new_df['Biased'] == 0]
+        # Gets the 3 lines with the most characters
+        ant_top_3_leters = ant_df["Count_Leters"].sort_values(ascending=False).head(3)
+        ant_df_top_3 = ant_df.loc[ant_df['Count_Leters'].isin(ant_top_3_leters)]
+        # Inserts the 3 long texts into the dictionary
+        for i in ant_df_top_3['Text']:
+            dict_longest_3_tweets["longest_3_tweets"]["antisemitic"].append(i)
+        # Gets the 3 lines with the most characters
+        non_ant_top_3_leters = non_ant_df["Count_Leters"].sort_values(ascending=False).head(3)
+        non_ant_df_top_3 = non_ant_df.loc[non_ant_df['Count_Leters'].isin(non_ant_top_3_leters)]
+        # Inserts the 3 long texts into the dictionary
+        for i in non_ant_df_top_3['Text']:
+            dict_longest_3_tweets["longest_3_tweets"]["non_antisemitic"].append(i)
 
         return dict_longest_3_tweets
 
