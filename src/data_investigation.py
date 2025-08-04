@@ -51,6 +51,10 @@ class DataAnalyzer:
 
     def common_words(self):
         dict_common_words = {"common_words": {"total": []}}
+        new_df = self.first_df.copy()
+        common_10_words = new_df.Text.str.split(expand=True).stack().value_counts().head(10)
+        for word in common_10_words.keys():
+            dict_common_words["common_words"]["total"].append(word)
 
         return dict_common_words
 

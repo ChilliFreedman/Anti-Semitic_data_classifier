@@ -14,6 +14,7 @@ d1.get_df(df)
 print(d1.total_tweets())
 print(d1.average_length())
 print(d1.longest_3_tweets())
+print(d1.common_words())
 
 #d1.df_testing()
 
